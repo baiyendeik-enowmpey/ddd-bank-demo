@@ -1,15 +1,48 @@
-
 services:
+
   db:
     image: postgres:15
+    container_name: ddd-db
     environment:
       POSTGRES_DB: ddd_db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
-      - "5432:5432"
-    volumes:
-      - pgdata:/var/lib/postgresql/data
+      - "15432:5432"         # Host-Port 15432 => DB erreichbar für pgAdmin
+    networks:
+      - dddnet
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
 
-volumes:
-  pgdata:
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: ddd-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"            # FIX: port 80 collision avoided
+    depends_on:
+      - db
+    networks:
+      - dddnet
+
+  app:
+    build: .
+    container_name: ddd-app
+    environment:
+      SPRING_PROFILES_ACTIVE: postgres
+    ports:
+      - "8088:8088"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - dddnet
+
+networks:
+  dddnet:
+    driver: bridge

@@ -1,2 +1,2 @@
-INSERT INTO accounts (id, owner, balance, overdraft_allowed) VALUES (1, 'Alice', 1000.00, false);
-INSERT INTO accounts (id, owner, balance, overdraft_allowed) VALUES (2, 'Bob', 250.00, true);
+INSERT INTO accounts (id, owner, balance, overdraft_allowed, overdraft_limit) VALUES (1, 'Alice', 1000.00, false, 0.00);
+INSERT INTO accounts (id, owner, balance, overdraft_allowed, overdraft_limit) VALUES (2, 'Bob', 250.00, true, 100.00);

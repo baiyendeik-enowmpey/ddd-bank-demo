@@ -21,6 +21,8 @@ public class Account {
 
     private boolean overdraftAllowed;
 
+    private BigDecimal overdraftLimit;
+
     public void deposit(java.math.BigDecimal amount) {
         if (amount.signum() <= 0) throw new IllegalArgumentException("Amount must be positive");
         this.balance = this.balance.add(amount);
@@ -32,5 +34,9 @@ public class Account {
             throw new IllegalStateException("Insufficient funds and overdraft not allowed");
         }
         this.balance = this.balance.subtract(amount);
+
+        if (balance.compareTo(overdraftLimit) < 0) {
+            throw new IllegalStateException("Overdraft Limit exceeded!");
+        }
     }
 }
