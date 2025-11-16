@@ -8,7 +8,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
-      - "15432:5432"         # Host-Port 15432 => DB erreichbar für pgAdmin
+      - "15432:5432"         # Host-Port 15432 => DB erreichbar fuer pgAdmin
     networks:
       - dddnet
     healthcheck:
